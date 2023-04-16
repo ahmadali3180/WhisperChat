@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 class RegisterViewController: UIViewController {
     //MARK: - Create UI Elements
@@ -20,6 +21,9 @@ class RegisterViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person")
         imageView.tintColor = .lightGray
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.borderWidth = 2
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -150,7 +154,7 @@ class RegisterViewController: UIViewController {
         scrollView.addSubview(confirmPasswordField)
         scrollView.addSubview(registerButton)
         
-//        Add Gesture Recognizers & UserInteractions
+        //        Add Gesture Recognizers & UserInteractions
         imageView.isUserInteractionEnabled = true
         scrollView.isScrollEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapChangeProfilePic))
@@ -162,7 +166,7 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func didTapChangeProfilePic() {
-        print("didTapChangeProfilePic() called")
+            presentPhotoActionSheet()
     }
     
     //MARK: -   Subviews Layouts
@@ -173,9 +177,11 @@ class RegisterViewController: UIViewController {
         
         //          Setting Custom Size
         let size = scrollView.width / 3
+
         
         //        Setting frames for UI Elements
         imageView.frame = CGRect(x: (scrollView.width-size)/2, y: 50, width: size, height: size)
+        imageView.layer.cornerRadius = imageView.width / 2.0
         firstNameField.frame = CGRect(x: 30, y: imageView.bottom+10, width: scrollView.width-60, height: 52)
         lastNameField.frame = CGRect(x: 30, y: firstNameField.bottom+10, width: scrollView.width-60, height: 52)
         emailField.frame = CGRect(x: 30, y: lastNameField.bottom+10, width: scrollView.width-60, height: 52)
@@ -212,6 +218,7 @@ class RegisterViewController: UIViewController {
     
 }
 
+            //MARK: - UITextFieldDelegate Methods
 extension RegisterViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -224,3 +231,64 @@ extension RegisterViewController: UITextFieldDelegate {
     }
 }
 
+extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
+    
+//     Creating Action Sheet
+    
+    func presentPhotoActionSheet() {
+        let actionSheet = UIAlertController(title: "Profile Picture", message: "How would you like to select a ppicture?", preferredStyle: .actionSheet)
+        let action1 = UIAlertAction(title: "Choose Photo", style: .default) { [weak self] _ in
+            self?.presentPhotoPicker()
+        }
+        let action2 = UIAlertAction(title: "Take Photo", style: .default) { [weak self] _ in
+            self?.presentCamera()
+        }
+        let action3  = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        actionSheet.addAction(action1)
+        actionSheet.addAction(action2)
+        actionSheet.addAction(action3)
+        
+        present(actionSheet, animated: true)
+    }
+    
+//    Using Camera OR PhotoPicker
+    
+    func presentCamera() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc, animated: true)
+    }
+    
+    func presentPhotoPicker() {
+        openPHPicker()
+    }
+    
+    // MARK: - PHPicker Configurations
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        print(results)
+        picker.dismiss(animated: true, completion: nil)
+        results.forEach { result in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
+                guard let image = reading as? UIImage, error == nil else { return }
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
+            }
+        }
+    }
+    
+    /// call this method for `PHPicker`
+    func openPHPicker() {
+        var phPickerConfig = PHPickerConfiguration(photoLibrary: .shared())
+        phPickerConfig.selectionLimit = 1
+        phPickerConfig.filter = PHPickerFilter.any(of: [.images])
+        let phPickerVC = PHPickerViewController(configuration: phPickerConfig)
+        phPickerVC.delegate = self
+        present(phPickerVC, animated: true)
+    }
+    
+}
