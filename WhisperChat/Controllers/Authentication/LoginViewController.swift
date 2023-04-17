@@ -134,7 +134,6 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
-            print("Logged In User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
         

@@ -49,10 +49,25 @@
                     <view key="view" contentMode="scaleToFill" id="hpI-Gi-Von">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tN7-pi-7bS">
+                                <rect key="frame" x="0.0" y="155" width="393" height="614"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="YLR-hs-5LE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tN7-pi-7bS" firstAttribute="leading" secondItem="YLR-hs-5LE" secondAttribute="leading" id="A0T-Kk-8m8"/>
+                            <constraint firstItem="YLR-hs-5LE" firstAttribute="bottom" secondItem="tN7-pi-7bS" secondAttribute="bottom" id="LoQ-NT-bui"/>
+                            <constraint firstItem="tN7-pi-7bS" firstAttribute="top" secondItem="YLR-hs-5LE" secondAttribute="top" id="rGn-Ci-Eg3"/>
+                            <constraint firstItem="YLR-hs-5LE" firstAttribute="trailing" secondItem="tN7-pi-7bS" secondAttribute="trailing" id="zKz-v2-IeX"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="otl-FQ-8YN"/>
+                    <connections>
+                        <outlet property="tableView" destination="tN7-pi-7bS" id="1fR-sU-WIB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pa0-0j-DYk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

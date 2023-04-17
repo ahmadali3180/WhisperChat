@@ -10,52 +10,73 @@ import FirebaseAuth
 
 class ProfileViewController: UIViewController {
     
-    //MARK: - Create UI Elemests
+    //MARK: - Outlets
+    @IBOutlet var tableView: UITableView!
     
-    private let signOutButton: UIButton = {
-        var button = UIButton()
-        button.setTitle("Sign Out", for: .normal)
-        button.layer.cornerRadius = 12
-        button.tintColor = .white
-        button.layer.masksToBounds = true
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.backgroundColor = .systemTeal
-        return button
-    }()
+    
+    //MARK: - Create UI Elemests
+    var pData = ["Log Out"]
+    
+    
+    //MARK: - Defined Properties
+    
+    
+    
+    //MARK: - viewDidLayoutSubviews
     
     override func viewDidLayoutSubviews() {
-        let customFrame = view.bounds
+        //        let customFrame = view.bounds
         
-        signOutButton.frame = CGRect(x: 30, y: (navigationController?.navigationBar.bottom)! + 40, width: customFrame.width-60, height: 52)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        Adding SubViews
-        view.addSubview(signOutButton)
-        signOutButton.addTarget(self, action: #selector(signOutButtonTapped), for: .touchUpInside)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
     }
     
-    @objc private func signOutButtonTapped() {
-        do {
+}
+
+//MARK: - TableView Delegate Methods
+
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return pData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var contentConfig = cell.defaultContentConfiguration()
+        contentConfig.text = pData[indexPath.row]
+        contentConfig.textProperties.alignment = .center
+        contentConfig.textProperties.color = .red
+        cell.contentConfiguration = contentConfig
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        actionSheet(title: "Log Out", message: "Do you really want to logout?", style: .destructive)
+        
+    }
+    
+    func actionSheet(title: String, message: String, style: UIAlertAction.Style) {
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let action1 = UIAlertAction(title: "Log Out", style: .destructive) { [weak self]_ in
+            guard let strongSelf = self else { return }
             let vc = LoginViewController()
             let nc = UINavigationController(rootViewController: vc)
             nc.modalPresentationStyle = .fullScreen
-            try FirebaseAuth.Auth.auth().signOut()
-            present(nc, animated: true)
-            print("Signed out!")
-        } catch {
-            alertUserLoginError(title: "Operation Failed", message: "Can't Signout current user.")
+            strongSelf.present(nc, animated: true)
         }
-    }
-    
-    func alertUserLoginError(title: String, message: String = "Error signing out.") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .cancel)
-        alert.addAction(action)
-        present(alert, animated: true)
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel)
+        actionSheet.addAction(action1)
+        actionSheet.addAction(action2)
+        present(actionSheet, animated: true)
     }
     
 }
