@@ -190,19 +190,16 @@ class RegisterViewController: UIViewController {
         
         DatabaseManager.shared.userExists(with: email) { [weak self] exists in
             guard let strongSelf = self else {return}
-            
             guard !exists else {
                 //                user Already exists
-                self?.alertUserLoginError(title: "User Already Exist", message: "A user with this email already exists. Please Log In")
+                strongSelf.alertUserLoginError(title: "User Already Exist", message: "A user with this email already exists. Please Log In")
                 return
             }
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
-                guard let strongSelf = self else { return }
                 guard authResult != nil, error == nil else {
                     print("Error Creating User")
                     return
                 }
-                
                 DatabaseManager.shared.insertUser(with: WhisperChatUser(firstName: firstName, lastName: lastName, emailAddress: email))
                 
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
