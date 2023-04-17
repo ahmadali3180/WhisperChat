@@ -86,10 +86,9 @@ class RegisterViewController: UIViewController {
         let field = UITextField()
         field.placeholder = "Password"
         field.autocapitalizationType = .none
-        field.keyboardType = .default
         field.enablesReturnKeyAutomatically = true
         field.autocorrectionType = .no
-        field.returnKeyType = .continue
+        field.returnKeyType = .done
         field.layer.cornerRadius = 12
         field.clearButtonMode = .whileEditing
         field.isSecureTextEntry = true
@@ -190,20 +189,22 @@ class RegisterViewController: UIViewController {
         
         DatabaseManager.shared.userExists(with: email) { [weak self] exists in
             guard let strongSelf = self else {return}
-            guard !exists else {
+            if exists {
                 //                user Already exists
-                strongSelf.alertUserLoginError(title: "User Already Exist", message: "A user with this email already exists. Please Log In")
+                strongSelf.alertUserLoginError(title: "User Already Exist", message: "A user with this email already exists. Please Log In.")
                 return
-            }
-            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
-                guard authResult != nil, error == nil else {
-                    print("Error Creating User")
-                    return
+            } else {
+                FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
+                    guard authResult != nil, error == nil else {
+                        print("Error Creating User")
+                        return
+                    }
+                    DatabaseManager.shared.insertUser(with: WhisperChatUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                    
+                    strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 }
-                DatabaseManager.shared.insertUser(with: WhisperChatUser(firstName: firstName, lastName: lastName, emailAddress: email))
-                
-                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             }
+            
         }
     }
     
@@ -214,7 +215,6 @@ class RegisterViewController: UIViewController {
         alert.addAction(action)
         present(alert, animated: true)
     }
-    
 }
 
 //MARK: - UITextFieldDelegate Methods
@@ -230,6 +230,7 @@ extension RegisterViewController: UITextFieldDelegate {
     }
 }
 
+//MARK: - UIImagePickder & PHPicker Delegate Methods
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     
     //     Creating Action Sheet

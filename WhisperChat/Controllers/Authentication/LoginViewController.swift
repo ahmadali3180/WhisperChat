@@ -130,7 +130,7 @@ class LoginViewController: UIViewController {
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else { return }
             guard let result = authResult, error == nil else {
-                print("Error Logging User In")
+               strongSelf.alertUserLoginError()
                 return
             }
             let user = result.user
@@ -141,7 +141,7 @@ class LoginViewController: UIViewController {
     }
     //    Alert for Authentication Error
     
-    func alertUserLoginError() {
+    func alertUserLoginError(title: String = "Authentication Error", message: String = "Enter Valid Credentials") {
         let alert = UIAlertController(title: "Authentication Error", message: "Enter Valid Credentials", preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .cancel)
         alert.addAction(action)
