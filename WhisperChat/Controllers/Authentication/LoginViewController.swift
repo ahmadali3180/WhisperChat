@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController { 
     
     //MARK: - Create UI Elements
     
@@ -84,7 +85,7 @@ class LoginViewController: UIViewController {
         //        Add Target Buttons
         loginButton.addTarget(self, action: #selector(loginButtonTapped ), for: .touchUpInside)
         
-//        Setting up Delegates
+        //        Setting up Delegates
         emailField.delegate = self
         passwordField.delegate = self
         
@@ -125,7 +126,18 @@ class LoginViewController: UIViewController {
             return
             
         }
-        // Firebase Login
+        /// `Firebase` Login
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let strongSelf = self else { return }
+            guard let result = authResult, error == nil else {
+                print("Error Logging User In")
+                return
+            }
+            let user = result.user
+            print("Logged In User: \(user)")
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        }
+        
     }
     //    Alert for Authentication Error
     

@@ -7,8 +7,10 @@
 
 import UIKit
 import PhotosUI
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
+    
     //MARK: - Create UI Elements
     
     private let scrollView: UIScrollView = {
@@ -19,7 +21,7 @@ class RegisterViewController: UIViewController {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
+        imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = .lightGray
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -99,25 +101,6 @@ class RegisterViewController: UIViewController {
         return field
     }()
     
-    private let confirmPasswordField: UITextField = {
-        let field = UITextField()
-        field.placeholder = "Confirm Password"
-        field.autocapitalizationType = .none
-        field.keyboardType = .default
-        field.enablesReturnKeyAutomatically = true
-        field.autocorrectionType = .no
-        field.returnKeyType = .done
-        field.layer.cornerRadius = 12
-        field.clearButtonMode = .whileEditing
-        field.isSecureTextEntry = true
-        field.layer.borderWidth = 1
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-        field.leftViewMode = .always
-        field.backgroundColor = .white
-        field.layer.borderColor = UIColor.lightGray.cgColor
-        return field
-    }()
-    
     private let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("Register", for: .normal)
@@ -151,7 +134,6 @@ class RegisterViewController: UIViewController {
         scrollView.addSubview(lastNameField)
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
-        scrollView.addSubview(confirmPasswordField)
         scrollView.addSubview(registerButton)
         
         //        Add Gesture Recognizers & UserInteractions
@@ -166,7 +148,7 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func didTapChangeProfilePic() {
-            presentPhotoActionSheet()
+        presentPhotoActionSheet()
     }
     
     //MARK: -   Subviews Layouts
@@ -177,7 +159,7 @@ class RegisterViewController: UIViewController {
         
         //          Setting Custom Size
         let size = scrollView.width / 3
-
+        
         
         //        Setting frames for UI Elements
         imageView.frame = CGRect(x: (scrollView.width-size)/2, y: 50, width: size, height: size)
@@ -186,8 +168,7 @@ class RegisterViewController: UIViewController {
         lastNameField.frame = CGRect(x: 30, y: firstNameField.bottom+10, width: scrollView.width-60, height: 52)
         emailField.frame = CGRect(x: 30, y: lastNameField.bottom+10, width: scrollView.width-60, height: 52)
         passwordField.frame = CGRect(x: 30, y: emailField.bottom+10, width: scrollView.width-60, height: 52)
-        confirmPasswordField.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
-        registerButton.frame = CGRect(x: 30, y: confirmPasswordField.bottom+10, width: scrollView.width-60, height: 52)
+        registerButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
     }
     
     //MARK: - Login Button Functionality
@@ -198,19 +179,40 @@ class RegisterViewController: UIViewController {
         passwordField.resignFirstResponder()
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
-        confirmPasswordField.resignFirstResponder()
         
-        guard let confirmPassword = confirmPasswordField.text, let firstName = firstNameField.text,
-              let lastName = lastNameField.text, let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6, !confirmPassword.isEmpty, !firstName.isEmpty, !lastName.isEmpty, confirmPassword.count >= 6, confirmPassword == password else {
-            alertUserLoginError()
+        
+        guard let firstName = firstNameField.text,
+              let lastName = lastNameField.text, let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6, !firstName.isEmpty, !lastName.isEmpty else {
+            alertUserLoginError(title: "User Registration Failed", message: "Add proper credentials to create an account.")
             return
         }
-        // Firebase Login`
+        /// `Firebase` Login Setup
+        
+        DatabaseManager.shared.userExists(with: email) { [weak self] exists in
+            guard let strongSelf = self else {return}
+            
+            guard !exists else {
+                //                user Already exists
+                self?.alertUserLoginError(title: "User Already Exist", message: "A user with this email already exists. Please Log In")
+                return
+            }
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
+                guard let strongSelf = self else { return }
+                guard authResult != nil, error == nil else {
+                    print("Error Creating User")
+                    return
+                }
+                
+                DatabaseManager.shared.insertUser(with: WhisperChatUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            }
+        }
     }
-    //    Alert for Authentication Error
     
-    func alertUserLoginError() {
-        let alert = UIAlertController(title: "Authentication Error", message: "Enter all Information to Create a New Account.", preferredStyle: .alert)
+    //    Alert for Authentication Error
+    func alertUserLoginError(title: String, message: String = "Enter All Info to Create an Account.") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .cancel)
         alert.addAction(action)
         present(alert, animated: true)
@@ -218,7 +220,7 @@ class RegisterViewController: UIViewController {
     
 }
 
-            //MARK: - UITextFieldDelegate Methods
+//MARK: - UITextFieldDelegate Methods
 extension RegisterViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -233,7 +235,7 @@ extension RegisterViewController: UITextFieldDelegate {
 
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     
-//     Creating Action Sheet
+    //     Creating Action Sheet
     
     func presentPhotoActionSheet() {
         let actionSheet = UIAlertController(title: "Profile Picture", message: "How would you like to select a ppicture?", preferredStyle: .actionSheet)
@@ -252,7 +254,7 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
         present(actionSheet, animated: true)
     }
     
-//    Using Camera OR PhotoPicker
+    //    Using Camera OR PhotoPicker
     
     func presentCamera() {
         let vc = UIImagePickerController()
@@ -292,3 +294,4 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
     }
     
 }
+
