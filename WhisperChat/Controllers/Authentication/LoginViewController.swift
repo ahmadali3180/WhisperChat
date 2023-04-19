@@ -377,7 +377,7 @@ extension LoginViewController {
             Auth.auth().signIn(with: credential) { [weak self] authResult, error in
                 guard let strongSelf = self else { return }
                 guard authResult != nil, error == nil else {
-                    print("Failed to Login with Credentials from Google: \(error)")
+                    print("Failed to Login with Credentials from Google: \(String(describing: error))")
                     return
                 }
                 print("Log In Successfully completed!")

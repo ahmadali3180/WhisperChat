@@ -18,5 +18,11 @@ target 'WhisperChat' do
   
   #  Google SignIn
   pod 'GoogleSignIn'
-
+  
+  # Message and Database pods
+  pod 'MessageKit'
+  pod 'JGProgressHUD'
+  pod 'RealmSwift'
+  pod 'SDWebImage'
+  
 end
