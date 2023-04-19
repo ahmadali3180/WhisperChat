@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C891C4B9D442D8F9BC5D4DB2 /* Pods_WhisperChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C13AA7A9CD8D182D76978CA /* Pods_WhisperChat.framework */; };
+		2D3DEE694A2BCE151716EF66 /* Pods_WhisperChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4022F6786ED770ECF94ADD5 /* Pods_WhisperChat.framework */; };
 		E0BAAC0A29ECAE770080A954 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BAAC0929ECAE770080A954 /* DatabaseManager.swift */; };
 		E0DF032D29EC392F008B0AA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DF032C29EC392F008B0AA4 /* AppDelegate.swift */; };
 		E0DF032F29EC392F008B0AA4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DF032E29EC392F008B0AA4 /* SceneDelegate.swift */; };
@@ -26,9 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		21A0076D716DAC14FFC4AE4A /* Pods-WhisperChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhisperChat.debug.xcconfig"; path = "Target Support Files/Pods-WhisperChat/Pods-WhisperChat.debug.xcconfig"; sourceTree = "<group>"; };
-		5C13AA7A9CD8D182D76978CA /* Pods_WhisperChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhisperChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D99FAD2C71A8AE5BEDE8FFF /* Pods-WhisperChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhisperChat.release.xcconfig"; path = "Target Support Files/Pods-WhisperChat/Pods-WhisperChat.release.xcconfig"; sourceTree = "<group>"; };
+		6CAB5F48D07D330F36C8C3B5 /* Pods-WhisperChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhisperChat.debug.xcconfig"; path = "Target Support Files/Pods-WhisperChat/Pods-WhisperChat.debug.xcconfig"; sourceTree = "<group>"; };
+		6F2FAB4D3834A39FF3876DE4 /* Pods-WhisperChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhisperChat.release.xcconfig"; path = "Target Support Files/Pods-WhisperChat/Pods-WhisperChat.release.xcconfig"; sourceTree = "<group>"; };
 		E0BAAC0929ECAE770080A954 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		E0BAAC0C29EEA8FF0080A954 /* WhisperChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhisperChat.entitlements; sourceTree = "<group>"; };
 		E0DF032929EC392F008B0AA4 /* WhisperChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +46,7 @@
 		E0DF035029EC402D008B0AA4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E0DF035629EC4CF8008B0AA4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E0DF035829EC8278008B0AA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E4022F6786ED770ECF94ADD5 /* Pods_WhisperChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhisperChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,28 +54,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C891C4B9D442D8F9BC5D4DB2 /* Pods_WhisperChat.framework in Frameworks */,
+				2D3DEE694A2BCE151716EF66 /* Pods_WhisperChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		19BAF374F3471A1336848157 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4022F6786ED770ECF94ADD5 /* Pods_WhisperChat.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5DF1D16B961AB3053DC28780 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				21A0076D716DAC14FFC4AE4A /* Pods-WhisperChat.debug.xcconfig */,
-				5D99FAD2C71A8AE5BEDE8FFF /* Pods-WhisperChat.release.xcconfig */,
+				6CAB5F48D07D330F36C8C3B5 /* Pods-WhisperChat.debug.xcconfig */,
+				6F2FAB4D3834A39FF3876DE4 /* Pods-WhisperChat.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		5FB6FC342768CF964B85977B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5C13AA7A9CD8D182D76978CA /* Pods_WhisperChat.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		E0DF032029EC392F008B0AA4 = {
@@ -84,7 +84,7 @@
 				E0DF032B29EC392F008B0AA4 /* WhisperChat */,
 				E0DF032A29EC392F008B0AA4 /* Products */,
 				5DF1D16B961AB3053DC28780 /* Pods */,
-				5FB6FC342768CF964B85977B /* Frameworks */,
+				19BAF374F3471A1336848157 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -207,11 +207,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0DF033D29EC3932008B0AA4 /* Build configuration list for PBXNativeTarget "WhisperChat" */;
 			buildPhases = (
-				22B6CB16855DBF52F4BDB63B /* [CP] Check Pods Manifest.lock */,
+				8585831CF32F39DBD8BB0B21 /* [CP] Check Pods Manifest.lock */,
 				E0DF032529EC392F008B0AA4 /* Sources */,
 				E0DF032629EC392F008B0AA4 /* Frameworks */,
 				E0DF032729EC392F008B0AA4 /* Resources */,
-				8184A77BA8E7C57BA3889685 /* [CP] Embed Pods Frameworks */,
+				379D944D9313D640DFDFE9C7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -270,7 +270,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22B6CB16855DBF52F4BDB63B /* [CP] Check Pods Manifest.lock */ = {
+		379D944D9313D640DFDFE9C7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8585831CF32F39DBD8BB0B21 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -290,23 +307,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8184A77BA8E7C57BA3889685 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WhisperChat/Pods-WhisperChat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -469,7 +469,7 @@
 		};
 		E0DF033E29EC3932008B0AA4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21A0076D716DAC14FFC4AE4A /* Pods-WhisperChat.debug.xcconfig */;
+			baseConfigurationReference = 6CAB5F48D07D330F36C8C3B5 /* Pods-WhisperChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -479,8 +479,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WhisperChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Whisper Chat";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to take a photo for your profile.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to select a photo for your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -491,7 +494,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ravalbit.WhisperChat;
+				PRODUCT_BUNDLE_IDENTIFIER = c;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -501,7 +504,7 @@
 		};
 		E0DF033F29EC3932008B0AA4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D99FAD2C71A8AE5BEDE8FFF /* Pods-WhisperChat.release.xcconfig */;
+			baseConfigurationReference = 6F2FAB4D3834A39FF3876DE4 /* Pods-WhisperChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -511,8 +514,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WhisperChat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Whisper Chat";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to take a photo for your profile.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to select a photo for your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -523,7 +529,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ravalbit.WhisperChat;
+				PRODUCT_BUNDLE_IDENTIFIER = c;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

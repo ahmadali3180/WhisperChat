@@ -7,10 +7,12 @@
 
 import UIKit
 import Foundation
+import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 import FBSDKLoginKit
 
-class LoginViewController: UIViewController { 
+class LoginViewController: UIViewController {
     
     //MARK: - Create UI Elements
     
@@ -91,7 +93,13 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    //    let facebookLoginButton = FBLoginButton(frame: CGRect(x: 30, y: 300, width: 200, height: 52))
+    private let googleLoginButton: GIDSignInButton = {
+        let button = GIDSignInButton()
+        button.style = .standard
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +109,8 @@ class LoginViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
         
         //        Add Target Buttons
-        loginButton.addTarget(self, action: #selector(loginButtonTapped ), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        googleLoginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         
         //        Setting up Delegates
         emailField.delegate = self
@@ -115,7 +124,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
-        
+        scrollView.addSubview(googleLoginButton)
         
     }
     
@@ -134,7 +143,10 @@ class LoginViewController: UIViewController {
         passwordField.frame = CGRect(x: 30, y: emailField.bottom+10, width: scrollView.width-60, height: 52)
         loginButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
         facebookLoginButton.frame = CGRect(x: 30, y: loginButton.bottom+10, width: scrollView.width-60, height: 52)
-        facebookLoginButton.center = scrollView .center
+        googleLoginButton.frame = CGRect(x: 30, y: facebookLoginButton.bottom+40, width: scrollView.width-60, height: 52)
+        facebookLoginButton.center = scrollView.center
+        
+        
     }
     
     //MARK: - Login Button Functionality
@@ -191,7 +203,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
-//MARK: - LoginVC - LoginButtonDelegate
+//MARK: - LoginVC - Facebook - LoginButtonDelegate
 extension LoginViewController: LoginButtonDelegate {
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginKit.FBLoginButton) {
         // no operation
@@ -224,7 +236,7 @@ extension LoginViewController: LoginButtonDelegate {
                 print("Facebook Graph Requesr Failed!")
                 return
             }
-//            print(result)
+            //            print(result)
             //            Getting User's Name & Email
             guard let userName = result["name"] as? String, let email = result["email"] as? String else {
                 print("Couldn't get User's Name & Email from Graph Request")
@@ -275,7 +287,7 @@ extension LoginViewController: LoginButtonDelegate {
             FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
                 guard let strongSelf = self else { return }
                 guard authResult != nil, error == nil else {
-                    print("Failed to Login with Credentials. 2FA May be Needed. Error from: FirebaseAuth SignIn with AuthCredential")
+                    print("Failed to Login with Credentials. 2FA May be Needed. Error from: FirebaseAuth SignIn with AuthCredential: \(String(describing: error))")
                     return
                 }
                 print("Log In Successfully completed!")
@@ -285,4 +297,98 @@ extension LoginViewController: LoginButtonDelegate {
         }
         
     }
+}
+
+//MARK: - LoginVC - Google - LoginButtonDelegate
+extension LoginViewController {
+    
+    @objc func login() {
+        //    Get Client Id
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        //     Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
+//            guard let strongSelf = self else { return }
+            guard result != nil, error == nil else {
+                print("Google Login Error 1: \(String(describing: error))")
+                return
+            }
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString
+            else {
+                print("Google Login Error 2")
+                return
+            }
+            
+            //        Getting Credentials of Google Account
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken,
+                accessToken: user.accessToken.tokenString)
+            
+//            getting Email and Fullname from google
+            guard let email = user.profile?.email, let fullName = user.profile?.name else {
+                print("Email and Name couldn't be found!")
+                return
+            }
+            
+//            Getting First and Last Name
+            let nameComponents = fullName.components(separatedBy: " ")
+            let startRange = 2
+            let endRange = 3
+            let range = startRange...endRange
+            
+            guard range.contains(nameComponents.count) else {
+                print("Error here")
+                return
+            }
+            
+            var firstName: String = ""
+            var lastName: String = ""
+            
+            if nameComponents.count == 2 {
+                firstName = nameComponents[0]
+                lastName = nameComponents[1]
+            } else {
+                firstName = "\(nameComponents[0]) \(nameComponents[1])"
+                lastName = nameComponents[2]
+            }
+            
+//            print("firstname: \(firstName) | lastname: \(lastName)")
+            
+            
+            //            Checking For existing email
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: WhisperChatUser(
+                        firstName: firstName,
+                        lastName: lastName,
+                        emailAddress: email)
+                    )
+                    print("User Added")
+                }
+                
+                return
+            }
+            
+            Auth.auth().signIn(with: credential) { [weak self] authResult, error in
+                guard let strongSelf = self else { return }
+                guard authResult != nil, error == nil else {
+                    print("Failed to Login with Credentials from Google: \(error)")
+                    return
+                }
+                print("Log In Successfully completed!")
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    @IBAction func googleLoginButton(sender: GIDSignInButton) {
+        login()
+    }
+    
+
 }

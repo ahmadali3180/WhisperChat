@@ -1,8 +1,9 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '14.0'
 
+use_frameworks!
+
 target 'WhisperChat' do
-  use_frameworks!
   
   #  Firebase
   pod 'FirebaseAuth'
@@ -15,4 +16,7 @@ target 'WhisperChat' do
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   
+  #  Google SignIn
+  pod 'GoogleSignIn'
+
 end
