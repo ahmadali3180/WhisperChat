@@ -61,22 +61,34 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         actionSheet(title: "Log Out", message: "Do you really want to logout?", style: .destructive)
-        
     }
     
     func actionSheet(title: String, message: String, style: UIAlertAction.Style) {
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let action1 = UIAlertAction(title: "Log Out", style: .destructive) { [weak self]_ in
             guard let strongSelf = self else { return }
-            let vc = LoginViewController()
-            let nc = UINavigationController(rootViewController: vc)
-            nc.modalPresentationStyle = .fullScreen
-            strongSelf.present(nc, animated: true)
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+                try 
+                let vc = LoginViewController()
+                let nc = UINavigationController(rootViewController: vc)
+                nc.modalPresentationStyle = .fullScreen
+                strongSelf.present(nc, animated: true)
+            } catch {
+                strongSelf.alert(title: "Log Out Error", message: "Please Check Your Network Connection.", style: .destructive)
+            }
         }
         let action2 = UIAlertAction(title: "Cancel", style: .cancel)
         actionSheet.addAction(action1)
         actionSheet.addAction(action2)
         present(actionSheet, animated: true)
+    }
+    
+    func alert(title: String, message: String, style: UIAlertAction.Style) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "OK", style: .cancel)
+        alert.addAction(action1)
+        present(alert, animated: true)
     }
     
 }
