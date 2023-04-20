@@ -5,21 +5,21 @@ use_frameworks!
 
 target 'WhisperChat' do
   
-  #  Firebase
+  #  Firebase.
   pod 'FirebaseAuth'
   pod 'FirebaseDatabase'
   pod 'FirebaseCore'
   pod 'FirebaseFirestore'
   
-  #  Facebook
+  #  Facebook.
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   
-  #  Google SignIn
+  #  Google SignIn.
   pod 'GoogleSignIn'
   
-  # Message and Database pods
+  # Message and Database pods.
   pod 'MessageKit'
   pod 'JGProgressHUD'
   pod 'RealmSwift'
